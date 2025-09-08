@@ -11,9 +11,9 @@ import (
 	"time"
 
 	"my_project/internal/config"
+	logger "my_project/internal/controller"
 	"my_project/internal/database"
 	"my_project/internal/server"
-	logger "my_project/internal/service"
 )
 
 func gracefulShutdown(apiServer *http.Server, done chan bool) {

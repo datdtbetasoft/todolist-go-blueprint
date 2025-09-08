@@ -9,7 +9,7 @@ import (
 
 	_ "github.com/joho/godotenv/autoload"
 
-	logger "my_project/internal/service"
+	logger "my_project/internal/controller"
 )
 
 type Server struct {

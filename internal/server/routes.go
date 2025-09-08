@@ -7,9 +7,9 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 
 	"my_project/internal/config"
+	validator "my_project/internal/controller"
 	"my_project/internal/handler"
 	ApiMiddleware "my_project/internal/middleware"
-	validator "my_project/internal/service"
 )
 
 func (s *Server) RegisterRoutes() http.Handler {

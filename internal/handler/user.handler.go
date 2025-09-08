@@ -2,9 +2,9 @@ package handler
 
 import (
 	"fmt"
+	userCtrl "my_project/internal/controller/user"
 	"my_project/internal/https/request"
 	"my_project/internal/https/response"
-	userServ "my_project/internal/service/user"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -38,7 +38,7 @@ func (*UserHandler) Register(c echo.Context) error {
 	}
 
 	fmt.Println("Received registration request:", params)
-	_, _, err := userServ.NewUserService().Register(params.Name, params.Email, params.Password, params.Birthday, params.Provider)
+	_, _, err := userCtrl.NewUserController().Register(params.Name, params.Email, params.Password, params.Birthday, params.Provider)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, response.NewResponse(
 			"500",

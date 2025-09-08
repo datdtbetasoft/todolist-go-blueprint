@@ -5,7 +5,7 @@ import (
 	"my_project/internal/https/response"
 	"net/http"
 
-	authServ "my_project/internal/service/auth"
+	authCtrl "my_project/internal/controller/auth"
 
 	"github.com/labstack/echo/v4"
 )
@@ -24,7 +24,7 @@ func (authCtl *AuthHandler) Login(c echo.Context) error {
 		return err
 	}
 
-	token, errLogin := authServ.NewAuthService().Login(params.Username, params.Password)
+	token, errLogin := authCtrl.NewAuthController().Login(params.Username, params.Password)
 	if errLogin != nil {
 		return c.JSON(http.StatusForbidden, response.NewResponse(
 			"500",

@@ -2,9 +2,9 @@ package middleware
 
 import (
 	"my_project/internal/constants"
+	logger "my_project/internal/controller"
+	sessionRedis "my_project/internal/controller/auth"
 	"my_project/internal/https/response"
-	logger "my_project/internal/service"
-	sessionRedis "my_project/internal/service/auth"
 	"net/http"
 	"strconv"
 	"strings"

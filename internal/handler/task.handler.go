@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
-	taskServ "my_project/internal/service/task"
+	taskCtrl "my_project/internal/controller/task"
 
 	"github.com/labstack/echo/v4"
 )
@@ -25,7 +25,7 @@ func (ctl *TaskHandler) CreateATask(c echo.Context) error {
 		return err
 	}
 
-	task, errServ := taskServ.NewTaskService().CreateATaskByUser(params.Title, params.Description, params.State, params.Completed, params.StartDate, params.DueDate, userId)
+	task, errServ := taskCtrl.NewTaskController().CreateATaskByUser(params.Title, params.Description, params.State, params.Completed, params.StartDate, params.DueDate, userId)
 
 	if errServ != nil {
 		return c.JSON(http.StatusInternalServerError, response.NewResponse(
@@ -63,8 +63,8 @@ func (ctl *TaskHandler) UpdateATask(c echo.Context) error {
 		return err
 	}
 
-	// Gọi service để update
-	task, errServ := taskServ.NewTaskService().UpdateATaskByUser(
+	// Gọi Controller để update
+	task, errServ := taskCtrl.NewTaskController().UpdateATaskByUser(
 		int(taskID),
 		params.Title,
 		params.Description,
@@ -105,8 +105,8 @@ func (ctl *TaskHandler) DeleteATask(c echo.Context) error {
 	// Lấy userId từ context (được middleware gắn vào)
 	userId := c.Get("userId").(int)
 
-	// Gọi service
-	err = taskServ.NewTaskService().DeleteATaskByUser(taskID, userId)
+	// Gọi Controller
+	err = taskCtrl.NewTaskController().DeleteATaskByUser(taskID, userId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, response.NewResponse(
 			"500",
