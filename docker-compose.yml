@@ -1,15 +1,41 @@
+version: '3.8'
+
 services:
-  psql_bp:
-    image: postgres:latest
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
     restart: unless-stopped
-    environment:
-      POSTGRES_DB: ${BLUEPRINT_DB_DATABASE}
-      POSTGRES_USER: ${BLUEPRINT_DB_USERNAME}
-      POSTGRES_PASSWORD: ${BLUEPRINT_DB_PASSWORD}
     ports:
-      - "${BLUEPRINT_DB_PORT}:5432"
+      - "27017:27017"
     volumes:
-      - psql_volume_bp:/var/lib/postgresql/data
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 123456a
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 123456a
+      POSTGRES_DB: mydb
 
 volumes:
-  psql_volume_bp:
+  mongo_data:
+  redis_data:
+  postgres_data:

@@ -9,21 +9,18 @@ import (
 
 	_ "github.com/joho/godotenv/autoload"
 
-	"my_project/internal/database"
+	logger "my_project/internal/service"
 )
 
 type Server struct {
 	port int
-
-	db database.Service
 }
 
-func NewServer() *http.Server {
+// Init initialize server
+func Init() *http.Server {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	NewServer := &Server{
 		port: port,
-
-		db: database.New(),
 	}
 
 	// Declare Server config
@@ -34,6 +31,8 @@ func NewServer() *http.Server {
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,
 	}
+
+	logger.INFO.Printf("Server is running on port %s\n", server.Addr)
 
 	return server
 }

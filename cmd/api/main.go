@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -9,7 +10,10 @@ import (
 	"syscall"
 	"time"
 
+	"my_project/internal/config"
+	"my_project/internal/database"
 	"my_project/internal/server"
+	logger "my_project/internal/service"
 )
 
 func gracefulShutdown(apiServer *http.Server, done chan bool) {
@@ -38,8 +42,18 @@ func gracefulShutdown(apiServer *http.Server, done chan bool) {
 }
 
 func main() {
+	env := flag.String("e", "development", "")
+	flag.Parse()
+	ctx := context.TODO()
+	config.Init(*env)
 
-	server := server.NewServer()
+	database.InitPostgres(ctx)
+	defer database.ClosePostgres()
+
+	database.InitRedis()
+	defer database.CloseRedis()
+
+	server := server.Init()
 
 	// Create a done channel to signal when the shutdown is complete
 	done := make(chan bool, 1)
@@ -54,5 +68,5 @@ func main() {
 
 	// Wait for the graceful shutdown to complete
 	<-done
-	log.Println("Graceful shutdown complete.")
+	logger.INFO.Println("Graceful shutdown complete.")
 }

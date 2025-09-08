@@ -1,0 +1,22 @@
+db:
+  postgresql:
+    host: "localhost"
+    username: root
+    password: 123456a
+    database: mydb
+    port: 5432
+    schema: public
+server:
+  cors: ['http://localhost:13000', '*']
+  version: "1.0.0"
+  port: "8080"
+redis:
+  host: "localhost"
+  port: 6379
+  password: "123456123"
+log:
+  isHaveSwagger: true
+  debug: true
+  slack-webhook: ""
+session:
+  name: "ESSESSION"
