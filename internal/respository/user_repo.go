@@ -4,18 +4,15 @@ import (
 	"my_project/internal/models"
 	"time"
 
-	postgres "my_project/internal/database"
-
 	"gorm.io/gorm"
 )
 
 type UserRepository struct {
-	db *gorm.DB
+	*BaseRepository
 }
 
 func NewUserRepository() *UserRepository {
-	db := postgres.GetDB()
-	return &UserRepository{db: db}
+	return &UserRepository{BaseRepository: baseRepo}
 }
 
 func (r *UserRepository) InsertAUser(name, email string, birthday time.Time) (*models.User, error) {
@@ -32,5 +29,7 @@ func (r *UserRepository) InsertAUser(name, email string, birthday time.Time) (*m
 }
 
 func (r *UserRepository) WithTx(tx *gorm.DB) *UserRepository {
-	return &UserRepository{db: tx}
+	return &UserRepository{
+		BaseRepository: &BaseRepository{db: tx},
+	}
 }

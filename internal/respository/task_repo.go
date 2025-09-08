@@ -6,19 +6,14 @@ import (
 	"my_project/internal/constants"
 	"my_project/internal/models"
 	"time"
-
-	postgres "my_project/internal/database"
-
-	"gorm.io/gorm"
 )
 
 type TaskRepository struct {
-	db *gorm.DB
+	*BaseRepository
 }
 
 func NewTaskRepository() *TaskRepository {
-	db := postgres.GetDB()
-	return &TaskRepository{db: db}
+	return &TaskRepository{BaseRepository: baseRepo}
 }
 
 func (r *TaskRepository) InsertATask(title, description, state string, complete bool, startDate, dueDate time.Time, userID int) (*models.Task, error) {
@@ -36,10 +31,6 @@ func (r *TaskRepository) InsertATask(title, description, state string, complete 
 		return nil, err
 	}
 	return task, nil
-}
-
-func (r *TaskRepository) WithTx(tx *gorm.DB) *TaskRepository {
-	return &TaskRepository{db: tx}
 }
 
 func (r *TaskRepository) UpdateTask(taskID int, title, description, state string, complete bool, startDate, dueDate time.Time, userID int) (*models.Task, error) {

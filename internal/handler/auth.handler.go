@@ -1,4 +1,4 @@
-package controller
+package handler
 
 import (
 	"my_project/internal/https/request"
@@ -10,14 +10,14 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type AuthController struct{}
+type AuthHandler struct{}
 
-func NewAuthController() *AuthController {
-	return new(AuthController)
+func NewAuthHandler() *AuthHandler {
+	return new(AuthHandler)
 }
 
 // Add authentication-related handler methods here
-func (authCtl *AuthController) Login(c echo.Context) error {
+func (authCtl *AuthHandler) Login(c echo.Context) error {
 	// Bind và validate request
 	params, err := BindAndValidate[request.LoginRequest](c)
 	if err != nil {

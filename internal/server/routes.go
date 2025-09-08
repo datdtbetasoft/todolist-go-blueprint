@@ -7,7 +7,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 
 	"my_project/internal/config"
-	"my_project/internal/controller"
+	"my_project/internal/handler"
 	ApiMiddleware "my_project/internal/middleware"
 	validator "my_project/internal/service"
 )
@@ -28,21 +28,21 @@ func (s *Server) RegisterRoutes() http.Handler {
 	}))
 	e.Validator = validator.NewValidator()
 
-	// ==== Controllers ====
-	HealthCtrl := controller.NewCheckHealthController()
-	HelloCtrl := controller.NewHelloWorldController()
-	UserCtrl := controller.NewUserController()
-	AuthCtrl := controller.NewAuthController()
-	TaskCtrl := controller.NewTaskController()
+	// ==== Handler ====
+	HealthHandler := handler.NewCheckHealthHandler()
+	HelloHandler := handler.NewHelloWorldHandler()
+	UserHandler := handler.NewUserHandler()
+	AuthHandler := handler.NewAuthHandler()
+	TaskHandler := handler.NewTaskHandler()
 
 	version := e.Group("/api/" + c.GetString("server.version"))
 	// ==== Routes ====
 	api := e.Group("") // nếu sau này muốn versioning: e.Group("/api/v1")
 	{
-		api.GET("/", HelloCtrl.HelloWorldHandler)
-		api.GET("/health", HealthCtrl.HealthHandler)
-		api.POST("/register", UserCtrl.Register) // thêm route đăng ký
-		api.POST("/login", AuthCtrl.Login)       // thêm route đăng ký
+		api.GET("/", HelloHandler.HelloWorldHandler)
+		api.GET("/health", HealthHandler.HealthHandler)
+		api.POST("/register", UserHandler.Register) // thêm route đăng ký
+		api.POST("/login", AuthHandler.Login)       // thêm route đăng ký
 
 	}
 
@@ -50,9 +50,9 @@ func (s *Server) RegisterRoutes() http.Handler {
 	authGroup := version.Group("/auth")
 	authGroup.Use(ApiMiddleware.TokenCheckMiddleware)
 	{
-		authGroup.POST("/task/create", TaskCtrl.CreateATask)
-		authGroup.PUT("/task/:id", TaskCtrl.UpdateATask)
-		authGroup.DELETE("/task/:id", TaskCtrl.DeleteATask)
+		authGroup.POST("/task/create", TaskHandler.CreateATask)
+		authGroup.PUT("/task/:id", TaskHandler.UpdateATask)
+		authGroup.DELETE("/task/:id", TaskHandler.DeleteATask)
 	}
 
 	return e

@@ -1,4 +1,4 @@
-package controller
+package handler
 
 import (
 	"fmt"
@@ -10,14 +10,14 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type UserController struct{}
+type UserHandler struct{}
 
-func NewUserController() *UserController {
-	return new(UserController)
+func NewUserHandler() *UserHandler {
+	return new(UserHandler)
 }
 
 // Add user-related handler methods here
-func (*UserController) Register(c echo.Context) error {
+func (*UserHandler) Register(c echo.Context) error {
 	var params request.RegisterRequest
 	// Bind JSON body vào struct
 	if err := c.Bind(&params); err != nil {
@@ -28,7 +28,7 @@ func (*UserController) Register(c echo.Context) error {
 		))
 	}
 
-	// Validate dữ liệu (nếu bạn có gắn tag validate)
+	// Validate
 	if err := c.Validate(&params); err != nil {
 		return c.JSON(http.StatusBadRequest, response.NewResponse(
 			"400",

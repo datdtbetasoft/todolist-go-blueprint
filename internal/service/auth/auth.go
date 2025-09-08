@@ -5,21 +5,15 @@ import (
 	"my_project/internal/helpers"
 	respository "my_project/internal/respository"
 	"strconv"
-
-	postgres "my_project/internal/database"
-
-	"gorm.io/gorm"
 )
 
 type AuthService struct {
-	db          *gorm.DB
 	userRepo    *respository.UserRepository
 	accountRepo *respository.AccRepository
 }
 
 func NewAuthService() *AuthService {
 	return &AuthService{
-		db:          postgres.GetDB(),
 		userRepo:    respository.NewUserRepository(),
 		accountRepo: respository.NewAccRepository(),
 	}

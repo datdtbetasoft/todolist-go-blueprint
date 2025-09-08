@@ -1,4 +1,4 @@
-package controller
+package handler
 
 import (
 	"my_project/internal/https/response"
@@ -7,7 +7,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// Utility function, không phải method của BaseController
+// Utility function, không phải method của Basehandler
 func BindAndValidate[T any](c echo.Context) (*T, error) {
 	var req T
 

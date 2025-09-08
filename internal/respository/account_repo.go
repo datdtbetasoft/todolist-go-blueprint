@@ -3,18 +3,15 @@ package repository
 import (
 	"my_project/internal/models"
 
-	postgres "my_project/internal/database"
-
 	"gorm.io/gorm"
 )
 
 type AccRepository struct {
-	db *gorm.DB
+	*BaseRepository
 }
 
 func NewAccRepository() *AccRepository {
-	db := postgres.GetDB()
-	return &AccRepository{db: db}
+	return &AccRepository{BaseRepository: baseRepo}
 }
 
 func (r *AccRepository) InsertAAcc(user models.User, password string, provider string) (*models.Account, error) {
@@ -42,5 +39,7 @@ func (r *AccRepository) FindByUsername(username string) (*models.Account, error)
 }
 
 func (r *AccRepository) WithTx(tx *gorm.DB) *AccRepository {
-	return &AccRepository{db: tx}
+	return &AccRepository{
+		BaseRepository: &BaseRepository{db: tx},
+	}
 }

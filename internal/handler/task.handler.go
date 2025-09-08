@@ -1,4 +1,4 @@
-package controller
+package handler
 
 import (
 	"my_project/internal/https/request"
@@ -11,14 +11,14 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type TaskController struct{}
+type TaskHandler struct{}
 
-func NewTaskController() *TaskController {
-	return new(TaskController)
+func NewTaskHandler() *TaskHandler {
+	return new(TaskHandler)
 }
 
 // Add user-related handler methods here
-func (ctl *TaskController) CreateATask(c echo.Context) error {
+func (ctl *TaskHandler) CreateATask(c echo.Context) error {
 	userId := c.Get("userId").(int)
 	params, err := BindAndValidate[request.CreateTaskRequest](c)
 	if err != nil {
@@ -42,7 +42,7 @@ func (ctl *TaskController) CreateATask(c echo.Context) error {
 	))
 }
 
-func (ctl *TaskController) UpdateATask(c echo.Context) error {
+func (ctl *TaskHandler) UpdateATask(c echo.Context) error {
 	// Lấy taskID từ URL param
 	taskIDParam := c.Param("id")
 	taskID, err := strconv.ParseInt(taskIDParam, 10, 64)
@@ -90,7 +90,7 @@ func (ctl *TaskController) UpdateATask(c echo.Context) error {
 	))
 }
 
-func (ctl *TaskController) DeleteATask(c echo.Context) error {
+func (ctl *TaskHandler) DeleteATask(c echo.Context) error {
 	// Lấy task ID từ param
 	taskIDParam := c.Param("id")
 	taskID, err := strconv.Atoi(taskIDParam)

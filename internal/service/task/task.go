@@ -4,21 +4,15 @@ import (
 	"my_project/internal/models"
 	respository "my_project/internal/respository"
 	"time"
-
-	postgres "my_project/internal/database"
-
-	"gorm.io/gorm"
 )
 
 type TaskService struct {
-	db       *gorm.DB
 	userRepo *respository.UserRepository
 	taskRepo *respository.TaskRepository
 }
 
 func NewTaskService() *TaskService {
 	return &TaskService{
-		db:       postgres.GetDB(),
 		userRepo: respository.NewUserRepository(),
 		taskRepo: respository.NewTaskRepository(),
 	}
